@@ -5,6 +5,7 @@ import Botao from "../../components/Botao";
 import { Link } from "react-router-dom";
 import logo from './Logo.png';
 import usePost from "../../usePost";
+import autenticaStore from "../../stores/autentica.store";
 
 const Imagem = styled.img`
   padding: 2em 0;
@@ -53,7 +54,7 @@ interface ILogin  {
 export default function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const {cadastrarDados, erro, sucesso} = usePost();
+    const {cadastrarDados, erro, sucesso, resposta} = usePost();
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -64,6 +65,7 @@ export default function Login() {
 
       try {
         cadastrarDados({ url: "auth/login", dados: usuario})
+        autenticaStore.login({email: email, token: resposta})
       } catch (erro) {
         erro && alert('Não foi possível fazer login')
       }
