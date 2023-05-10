@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import PaginaBase from "./pages/PaginaBase";
-import PaginaInicial from "./pages/Login";
+import PaginaInicial from "./pages/PaginaInicial";
 
 function AppRoutes() {
     return (
