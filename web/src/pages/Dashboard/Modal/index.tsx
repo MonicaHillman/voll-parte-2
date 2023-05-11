@@ -6,6 +6,9 @@ import styled from "styled-components";
 import CampoDigitacao from "../../../components/CampoDigitacao";
 import Botao from "../../../components/Botao";
 import Subtitulo from "../../../components/Subtitulo";
+import IProfissional from "../../../types/IProfissional";
+import usePost from "../../../usePost";
+import autenticaStore from "../../../stores/autentica.store";
 
 const BoxCustomizado = styled(Box)`
   position: fixed;
@@ -62,6 +65,8 @@ export default function ModalCadastro({ open, handleClose }: { open: boolean, ha
     const [estado, setEstado] = useState("");
     const [telefone, setTelefone] = useState("");
     const label = { inputProps: { 'aria-label': 'Atende por plano?' } };
+    const {cadastrarDados} = usePost();
+    const {usuario} = autenticaStore;
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const checkboxValue = event.target.value;
@@ -71,6 +76,32 @@ export default function ModalCadastro({ open, handleClose }: { open: boolean, ha
             setPlanosSelecionados(planosSelecionados.filter(plano => plano !== checkboxValue));
         }
     };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const profissional: IProfissional = {
+            nome: nome,
+            crm: crm,
+            especialidade: especialidade,
+            possuiPlanoSaude: possuiPlano,
+            estaAtivo: true,
+            imagem: imagem,
+            senha: senha,
+            planoSaude: planosSelecionados,
+            email: email,
+            telefone: telefone,
+            endereco: {
+                cep: cep,
+                rua: rua,
+                estado: estado,
+                numero: numero,
+                complemento: complemento
+            }
+        }
+
+        await cadastrarDados({url: "especialista", dados: profissional, token: usuario.token})
+    }
 
     return (
         <>
@@ -82,7 +113,7 @@ export default function ModalCadastro({ open, handleClose }: { open: boolean, ha
             >
                 <BoxCustomizado>
                     <Titulo>Cadastre o especialista inserindo os dados abaixo:</Titulo>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <Container>
                             <CampoDigitacao tipo="text" label="Nome" valor={nome} placeholder="Digite seu nome completo" onChange={setNome} />
                             <CampoDigitacao tipo="email" label="Email" valor={email} placeholder="Digite seu email" onChange={setEmail} />
