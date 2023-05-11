@@ -14,7 +14,7 @@ interface PropsCustomizadas {
 }
 
 const StepCustomizada = styled.div<PropsCustomizadas>`
-    background-color: ${({cor}) => cor};
+    background-color: ${({ cor }) => cor};
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -58,6 +58,7 @@ export default function Cadastro() {
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
     const [complemento, setComplemento] = useState('');
+    const [estado, setEstado] = useState('');
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // previne o envio padrão do formulário
@@ -69,25 +70,25 @@ export default function Cadastro() {
 
     return (
         <>
-        <Imagem src={logo} alt="Logo da Voll" />
-        <Stepper activeStep={etapaAtiva}>
-            <Step>
-                <StepLabel 
-                StepIconComponent={(props) => (
-                    <StepCustomizada cor={props.active ? 'lightblue' : 'lightgray'} />
-                )}
-                />
-            </Step>
-            <Step>
-            <StepLabel 
-                StepIconComponent={(props) => (
-                    <StepCustomizada cor={props.active ? 'lightblue' : 'lightgray'} />
-                )}
-                />
-            </Step>
-        </Stepper>
+            <Imagem src={logo} alt="Logo da Voll" />
+            <Stepper activeStep={etapaAtiva}>
+                <Step>
+                    <StepLabel
+                        StepIconComponent={(props) => (
+                            <StepCustomizada cor={props.active ? 'lightblue' : 'lightgray'} />
+                        )}
+                    />
+                </Step>
+                <Step>
+                    <StepLabel
+                        StepIconComponent={(props) => (
+                            <StepCustomizada cor={props.active ? 'lightblue' : 'lightgray'} />
+                        )}
+                    />
+                </Step>
+            </Stepper>
 
-        {etapaAtiva === 0 ? (
+            {etapaAtiva === 0 ? (
                 <>
                     <Titulo>Primeiro, alguns dados básicos:</Titulo>
                     <Formulario onSubmit={handleSubmit}>
@@ -166,13 +167,19 @@ export default function Cadastro() {
                                 placeholder="Complemento"
                                 onChange={setComplemento}
                             />
+                            <CampoDigitacao
+                                tipo="text"
+                                valor={estado}
+                                placeholder="Estado"
+                                onChange={setEstado}
+                            />
                         </Container>
                         <BotaoCustomizado type="submit">Cadastrar</BotaoCustomizado>
                     </Formulario>
                 </>
+            )
+
+            }
+        </>
     )
-    
-} 
-</> 
-)
 }
